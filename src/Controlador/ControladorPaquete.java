@@ -7,7 +7,6 @@ package Controlador;
 
 import Modelo.Camionero;
 import Modelo.Cliente;
-import Modelo.ConexionGmail;
 import Modelo.ConnectionG2;
 import Modelo.ModeloCamionero;
 import Modelo.ModeloCliente;
@@ -149,15 +148,12 @@ public class ControladorPaquete {
                 Logger.getLogger(ModeloPaquete.class.getName()).log(Level.SEVERE, null, ex);
             }
             if(new ModeloPaquete(vista.getTxtCodigo().getText(),vista.getTxtDescripcion().getText(),Integer.parseInt(vista.getTxtIdEnvio().getText()),Integer.parseInt(vista.getTxtIdCliente().getText())).grabarPaquete() == null){
-                ConexionGmail con = new ConexionGmail();
                 ModeloCliente cli = new ModeloCliente();
                 Cliente cliente = cli.getCliente(Integer.parseInt(vista.getTxtIdCliente().getText()));
                 viaje_BD vi = new viaje_BD();
                 viaje_MD viaje = vi.getViaje(Integer.parseInt(vista.getTxtIdEnvio().getText()));
                 ModeloCamionero cam = new ModeloCamionero();
                 Camionero camionero = cam.getCamionero(viaje.getCa());
-                
-                con.enviarCorreo(cliente, viaje, camionero);
             }
             vista.getDigPaquete().dispose();
             cargaPaquete();

@@ -17,8 +17,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 
 /**
  *
@@ -170,25 +168,23 @@ public class ControladorCliente {
 
             if (allowCreateEdit()) {
                 if (!persona.isRepeat()) {
-                    if (validateCorreo()) {
                         if (persona.GrabaClienteDB() == null) {
                             JOptionPane.showMessageDialog(null, "SE HA CREADO AL CAMIONERO CON ÉXITO");
                         } else {
                             JOptionPane.showMessageDialog(null, "NO SE HA PODIDO CREAR EL CAMIONERO");
                         }
-                    }
+                    
                 } else {
                     int a = JOptionPane.showConfirmDialog(null, "CÉDULA YA INGRESADA, ¿QUIERE REGISTRAR A ESTA PERSONA COMO CLIENTE?");
                     if (a == 0) {
                         if (!persona.isRepeatCli()) {
-                            if (validateCorreo()) {
                                 persona.setId(persona.getID());
                                 if (persona.RegistrarClienteDB() == null) {
                                     JOptionPane.showMessageDialog(null, "LA PERSONA HA SIDO REGISTRADA COMO CLIENTE EXITOSAMENTE");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "NO SE HA PODIDO REGISTRAR A LA PERSONA");
                                 }
-                            }
+                            
                         } else {
                             JOptionPane.showMessageDialog(null, "ERROR, LA PERSONA YA HA SIDO REGISTRADA COMO CLIENTE");
                         }
@@ -223,13 +219,12 @@ public class ControladorCliente {
             per.setId_pob(poblacion);
 
             if (allowCreateEdit()) {
-                if (validateCorreo()) {
                     if (persona.EditClienteDB() == null && per.EditPersonaDB() == null) {
                         JOptionPane.showMessageDialog(null, "SE HA EDITADO AL CLIENTE CON ÉXITO");
                     } else {
                         JOptionPane.showMessageDialog(null, "NO SE HA PODIDO CREAR AL CLIENTE");
                     }
-                }
+                
             } else {
                 JOptionPane.showMessageDialog(null, "ASEGÚRESE DE QUE TODOS LOS CAMPOS ESTÉN LLENOS");
             }
@@ -386,19 +381,6 @@ public class ControladorCliente {
                 }
             }
         });
-    }
-
-    private boolean validateCorreo() {
-        boolean a = false;
-        String email = vista.getTxtSalario().getText();
-        try {
-            InternetAddress emailAddr = new InternetAddress(email);
-            emailAddr.validate();
-            a = true;
-        } catch (AddressException ex) {
-            JOptionPane.showMessageDialog(null, "El correo ingresado no es válido o no existe");
-        }
-        return a;
     }
 
     public boolean allowCreateEdit() {
