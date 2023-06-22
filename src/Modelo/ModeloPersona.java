@@ -16,26 +16,26 @@ public class ModeloPersona extends Persona {
     public ModeloPersona() {
     }
 
-    public ModeloPersona(int id, String dni, String nombre, String apellido, String telefono, int direccion, int id_pob) {
-        super(id, dni, nombre, apellido, telefono, direccion, id_pob);
+    public ModeloPersona(String cedula, String nombre1, String nombre2, String apellido1, String apellido2, String direccion, String telefono) {
+        super(cedula, nombre1, nombre2, apellido1, apellido2, direccion, telefono);
     }
 
     public List<Persona> ListPersonas() {
         List<Persona> lista = new ArrayList<>();
-        String sql = "SELECT id_per, dni_per, nombre_per, apellido_per, telefono_per, direccion_per, id_pob FROM PERSONA";
+        String sql = "SELECT cedula, nombre1, nombre2, apellido1, apellido12, direccion, telefono FROM PERSONA";
         ConnectionG2 conpq = new ConnectionG2();
         ResultSet rs = conpq.Consulta(sql);
 
         try {
             while (rs.next()) {
                 Persona per = new Persona();
-                per.setId(rs.getInt(1));
-                per.setDni(rs.getString(2));
-                per.setNombre(rs.getString(3));
-                per.setApellido(rs.getString(4));
-                per.setTelefono(rs.getString(5));
-                per.setDireccion(rs.getInt(6));
-                per.setId_pob(rs.getInt(7));
+                per.setCedula(rs.getString(1));
+                per.setNombre1(rs.getString(2));
+                per.setNombre2(rs.getString(3));
+                per.setApellido1(rs.getString(4));
+                per.setApellido2(rs.getString(5));
+                per.setDireccion(rs.getString(6));
+                per.setTelefono(rs.getString(7));
                 lista.add(per);
             }
             rs.close();
@@ -48,20 +48,20 @@ public class ModeloPersona extends Persona {
 
     public List<Persona> SearchListPersonas() {
         List<Persona> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Persona WHERE idpersona like '%" + getDni() + "%'";
+        String sql = "SELECT * FROM Persona WHERE cedula like '%" + getCedula()+ "%'";
 
         ConnectionG2 conpq = new ConnectionG2();
         ResultSet rs = conpq.Consulta(sql);
         try {
             while (rs.next()) {
                 Persona per = new Persona();
-                per.setId(rs.getInt(1));
-                per.setDni(rs.getString(2));
-                per.setNombre(rs.getString(3));
-                per.setApellido(rs.getString(4));
-                per.setTelefono(rs.getString(5));
-                per.setDireccion(rs.getInt(6));
-                per.setId_pob(rs.getInt(7));
+                per.setCedula(rs.getString(1));
+                per.setNombre1(rs.getString(2));
+                per.setNombre2(rs.getString(3));
+                per.setApellido1(rs.getString(4));
+                per.setApellido2(rs.getString(5));
+                per.setDireccion(rs.getString(6));
+                per.setTelefono(rs.getString(7));
                 lista.add(per);
             }
             rs.close();
@@ -73,10 +73,10 @@ public class ModeloPersona extends Persona {
     }
 
     public SQLException GrabaPersonaDB() {
-        String sql = "INSERT INTO Persona (id_per, dni_per, nombre_per, apellido_per, telefono_per, "
-                + "direccion_per, id_pob) VALUES ('" + getId() + "','" + getDni() + "',"
-                + "'" + getNombre() + "','" + getApellido() + "','" + getTelefono() + "','"
-                + getDireccion() + "','" + getId_pob() + "')"; //REVISAR EL INSERT 
+        String sql = "INSERT INTO Persona (cedula, nombre1, nombre2, apellido1, apellido2, direccion, "
+                + "telefono) VALUES ('" + getCedula()+ "','" + getNombre1()+ "',"
+                + "'" + getNombre2() + "','" + getApellido1() + "','" + getApellido2()+ "','"
+                + getDireccion() + "','" + getTelefono()+ "')"; //REVISAR EL INSERT 
 
         ConnectionG2 con = new ConnectionG2();
         SQLException ex = con.Accion(sql);
@@ -84,10 +84,9 @@ public class ModeloPersona extends Persona {
     }
 
     public SQLException EditPersonaDB() {
-        String sql = "UPDATE Persona SET nombre_per = '" + getNombre()
-                + "', apellido_per = '" + getApellido() + "', telefono_per = '" + getTelefono()
-                + "', direccion_per = '" + getDireccion() + "', id_pob= '" + getId_pob()
-                + "' WHERE id_per = " + getId() + "";
+        String sql = "UPDATE Persona SET nombre1 = '" + getNombre1() + "', nombre2 = '" + getNombre2()
+                + "', apellido1 = '" + getApellido1() + "', apellido2 = '" + getApellido2()
+                + "', direccion = '" + getDireccion() + "', telefono= '" + getTelefono();
 
         ConnectionG2 con = new ConnectionG2();
         SQLException ex = con.Accion(sql);
@@ -95,7 +94,7 @@ public class ModeloPersona extends Persona {
     }
 
     public SQLException DeleteLogicPerson() {
-        String sql = "UPDATE Persona SET activo = false WHERE id_per = '" + getId() + "'";
+        String sql = "UPDATE Persona SET activo = false WHERE cedula = '" + getCedula() + "'";
 
         ConnectionG2 con = new ConnectionG2();
         SQLException ex = con.Accion(sql);
@@ -103,7 +102,7 @@ public class ModeloPersona extends Persona {
     }
 
     public SQLException DeletePhisicPerson() {
-        String sql = "DELETE FROM Persona WHERE id_per = '" + getId() + "'";
+        String sql = "DELETE FROM Persona WHERE cedula = '" + getCedula()+ "'";
 
         ConnectionG2 con = new ConnectionG2();
         SQLException ex = con.Accion(sql);

@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  */
 public class viaje_BD extends viaje_MD{
 
-    public viaje_BD(int via, int ca, int cam, int pro, Date fecha_conduccion, Date fecha_llegada) {
-        super(via, ca, cam, pro, fecha_conduccion, fecha_llegada);
+    public viaje_BD(int codigo_viaje, Date fecha_viaje, int id_conduc_viaje, String matricula_viaje) {
+        super(codigo_viaje, fecha_viaje, id_conduc_viaje, matricula_viaje);
     }
 
     public viaje_BD() {
@@ -29,19 +29,17 @@ public class viaje_BD extends viaje_MD{
     
        public List<viaje_MD> lista_viaje() {
         List<viaje_MD> lista = new ArrayList<>();
-        String sql = "SELECT id_via, id_ca, id_cam, id_pro, fecha_conduccion, fecha_llegada FROM VIAJE order by 1";
+        String sql = "SELECT codViajes, fehca, idConduc, matricula FROM VIAJE order by 1";
         ConnectionG2 conpq = new ConnectionG2();
         ResultSet rs = conpq.Consulta(sql);
 
         try {
             while (rs.next()) {
                 viaje_MD viaje = new viaje_MD();
-                viaje.setVia(rs.getInt(1));
-                viaje.setCa(rs.getInt(2));
-                viaje.setCam(rs.getInt(3));
-                viaje.setPro(rs.getInt(4));
-                viaje.setFecha_conduccion(rs.getDate(5));
-                viaje.setFecha_llegada(rs.getDate(6));
+                viaje.setCodigo_viaje(rs.getInt(1));
+                viaje.setFecha_viaje(rs.getDate(2));
+                viaje.setId_conduc_viaje(rs.getInt(3));
+                viaje.setMatricula_viaje(rs.getString(4));
                 lista.add(viaje);
             }
             rs.close();
@@ -54,19 +52,17 @@ public class viaje_BD extends viaje_MD{
 
     public List<viaje_MD> SearchListPersonas() {
         List<viaje_MD> lista = new ArrayList<>();
-        String sql = "SELECT * FROM VIAJE WHERE id_viaje like '%" + getVia()+ "%' order by 1";
+        String sql = "SELECT * FROM VIAJE WHERE codViajes like '%" + getCodigo_viaje()+ "%' order by 1";
 
         ConnectionG2 conpq = new ConnectionG2();
         ResultSet rs = conpq.Consulta(sql);
         try {
             while (rs.next()) {
                viaje_MD viaje = new viaje_MD();
-                viaje.setVia(rs.getInt(1));
-                viaje.setCa(rs.getInt(2));
-                viaje.setCam(rs.getInt(3));
-                viaje.setPro(rs.getInt(4));
-                viaje.setFecha_conduccion(rs.getDate(5));
-                viaje.setFecha_llegada(rs.getDate(6));
+                viaje.setCodigo_viaje(rs.getInt(1));
+                viaje.setFecha_viaje(rs.getDate(2));
+                viaje.setId_conduc_viaje(rs.getInt(3));
+                viaje.setMatricula_viaje(rs.getString(4));
                 lista.add(viaje);
             }
             rs.close();
@@ -78,10 +74,9 @@ public class viaje_BD extends viaje_MD{
     }
 
     public SQLException GrabaViajeDB() {
-        String sql = "INSERT INTO VIAJE (id_via, id_ca, id_cam, id_pro, fecha_conduccion, "
-                + "fecha_llegada) VALUES (" + getVia()+ "," + getCa()+ ","
-                + getCam()+ "," + getPro()+ ", to_date('" + getFecha_conduccion()+ "', 'yyyy-mm-dd'), to_date('"
-                + getFecha_llegada()+ "', 'yyyy-mm-dd'))"; //REVISAR EL INSERT 
+        String sql = "INSERT INTO VIAJE (codViajes, fecha, idConduc, matricula) "
+                + "VALUES (" + getCodigo_viaje()+ "," + "to_date('" + getFecha_viaje()+ "', 'yyyy-mm-dd')"
+                + getId_conduc_viaje()+ ",'" + getMatricula_viaje()+ "')"; //REVISAR EL INSERT 
 
         ConnectionG2 con = new ConnectionG2();
         SQLException ex = con.Accion(sql);
@@ -89,10 +84,9 @@ public class viaje_BD extends viaje_MD{
     }
 
     public SQLException EditPersonaDB() {
-        String sql = "UPDATE VIAJE SET id_via = '" + getVia()
-                + "', id_ca = '" + getCa()+ "', id_cam = '" + getCam()
-                + "', id_pro = '" + getPro()+ "', fecha_conduccion= '" + getFecha_conduccion()
-                + "' WHERE id_via = " + getVia() + "";
+        String sql = "UPDATE VIAJE SET codViajes = '" + getCodigo_viaje()
+                + "', fecha = '" + getFecha_viaje()+ "', idConduc = '" + getId_conduc_viaje()
+                + "', id_pro = '" + getMatricula_viaje() + "' WHERE codViajes = " + getCodigo_viaje()+ "";
 
         ConnectionG2 con = new ConnectionG2();
         SQLException ex = con.Accion(sql);
@@ -100,7 +94,7 @@ public class viaje_BD extends viaje_MD{
     }
 
     public SQLException DeleteLogicPerson() {
-        String sql = "UPDATE VIAJE SET activo = false WHERE id_viaje = '" + getVia()+ "'";
+        String sql = "UPDATE VIAJE SET activo = false WHERE codViajes = '" + getCodigo_viaje()+ "'";
 
         ConnectionG2 con = new ConnectionG2();
         SQLException ex = con.Accion(sql);
@@ -108,7 +102,7 @@ public class viaje_BD extends viaje_MD{
     }
 
     public SQLException DeletePhisicViaje() {
-        String sql = "DELETE FROM VIAJE WHERE id_via = " + getVia();
+        String sql = "DELETE FROM VIAJE WHERE codViajes = " + getCodigo_viaje();
 
         ConnectionG2 con = new ConnectionG2();
         SQLException ex = con.Accion(sql);
@@ -117,7 +111,7 @@ public class viaje_BD extends viaje_MD{
     
     public String NoSerie(){
         String serie = "";
-        String sql ="SELECT MAX(id_via) FROM VIAJE";
+        String sql ="SELECT MAX(codViajes) FROM VIAJE";
         
         ConnectionG2 con = new ConnectionG2();
         ResultSet rs = con.Consulta(sql);
@@ -134,15 +128,15 @@ public class viaje_BD extends viaje_MD{
     
     public viaje_MD getViaje(int via){
         viaje_MD viaje = new viaje_MD();
-        String sql ="SELECT v.id_ca, v.fecha_conduccion FROM VIAJE v, PAQUETE p where v.id_via=p.id_env AND p.id_env = " + via + " ORDER BY 1";
+        String sql ="SELECT v.matricula, v.fecha FROM VIAJE v, PAQUETE p where v.codViajes = p.codViajes AND p.codViajes = " + via + " ORDER BY 1";
         
         ConnectionG2 con = new ConnectionG2();
         ResultSet rs = con.Consulta(sql);
         
         try{
             while(rs.next()){
-                viaje.setCa(rs.getInt(1));
-                viaje.setFecha_conduccion(rs.getDate(2));
+                viaje.setMatricula_viaje(rs.getString(1));
+                viaje.setFecha_viaje(rs.getDate(2));
             }
         }catch(SQLException e){
             System.out.println(e);
@@ -152,7 +146,7 @@ public class viaje_BD extends viaje_MD{
     
     public boolean isUtilize(){
         boolean serie = false;
-        String sql ="SELECT count(id_env) FROM PAQUETE WHERE id_env = " + getVia();
+        String sql ="SELECT count(codViajes) FROM PAQUETE WHERE codViajes = " + getCodigo_viaje();
         
         ConnectionG2 con = new ConnectionG2();
         ResultSet rs = con.Consulta(sql);

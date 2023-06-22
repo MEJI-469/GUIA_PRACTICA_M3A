@@ -12,75 +12,57 @@ import java.util.Date;
  * @author HP
  */
 public class viaje_MD {
-    private int via;
-    private int ca;
-    private int cam;
-    private int pro;
-    private Date fecha_conduccion;
-    private Date fecha_llegada;
+    private int codigo_viaje;
+    private Date fecha_viaje;
+    private int id_conduc_viaje;
+    private String matricula_viaje;
 
     public viaje_MD() {
     }
 
-    public viaje_MD(int via, int ca, int cam, int pro, Date fecha_conduccion, Date fecha_llegada) {
-        this.via = via;
-        this.ca = ca;
-        this.cam = cam;
-        this.pro = pro;
-        this.fecha_conduccion = fecha_conduccion;
-        this.fecha_llegada = fecha_llegada;
+    public viaje_MD(int codigo_viaje, Date fecha_viaje, int id_conduc_viaje, String matricula_viaje) {
+        this.codigo_viaje = codigo_viaje;
+        this.fecha_viaje = fecha_viaje;
+        this.id_conduc_viaje = id_conduc_viaje;
+        this.matricula_viaje = matricula_viaje;
     }
 
-    public int getVia() {
-        return via;
+    public int getCodigo_viaje() {
+        return codigo_viaje;
     }
 
-    public void setVia(int via) {
-        this.via = via;
+    public void setCodigo_viaje(int codigo_viaje) {
+        this.codigo_viaje = codigo_viaje;
     }
 
-    public int getCa() {
-        return ca;
+    public Date getFecha_viaje() {
+        return fecha_viaje;
     }
 
-    public void setCa(int ca) {
-        this.ca = ca;
+    public void setFecha_viaje(Date fecha_viaje) {
+        this.fecha_viaje = fecha_viaje;
     }
 
-    public int getCam() {
-        return cam;
+    public int getId_conduc_viaje() {
+        return id_conduc_viaje;
     }
 
-    public void setCam(int cam) {
-        this.cam = cam;
+    public void setId_conduc_viaje(int id_conduc_viaje) {
+        this.id_conduc_viaje = id_conduc_viaje;
     }
 
-    public int getPro() {
-        return pro;
+    public String getMatricula_viaje() {
+        return matricula_viaje;
     }
 
-    public void setPro(int pro) {
-        this.pro = pro;
-    }
-
-    public Date getFecha_conduccion() {
-        return fecha_conduccion;
-    }
-
-    public void setFecha_conduccion(Date fecha_conduccion) {
-        this.fecha_conduccion = fecha_conduccion;
-    }
-
-    public Date getFecha_llegada() {
-        return fecha_llegada;
-    }
-
-    public void setFecha_llegada(Date fecha_llegada) {
-        this.fecha_llegada = fecha_llegada;
+    public void setMatricula_viaje(String matricula_viaje) {
+        this.matricula_viaje = matricula_viaje;
     }
 
     @Override
     public String toString() {
-        return "viaje_MD{" + "via=" + via + ", ca=" + ca + ", cam=" + cam + ", pro=" + pro + ", fecha_conduccion=" + fecha_conduccion + ", fecha_llegada=" + fecha_llegada + '}';
+        return "viaje_MD{" + "codigo_viaje=" + codigo_viaje + ", fecha_viaje=" + fecha_viaje + ", id_conduc_viaje=" + id_conduc_viaje + ", matricula_viaje=" + matricula_viaje + '}';
     }
+    
+    
 }
